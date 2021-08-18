@@ -1,7 +1,6 @@
 package com.purbon.kafka.topology.actions.topics.builders;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
 
 import com.purbon.kafka.topology.TopicManager;
@@ -9,6 +8,7 @@ import com.purbon.kafka.topology.actions.topics.TopicConfigUpdatePlan;
 import com.purbon.kafka.topology.api.adminclient.TopologyBuilderAdminClient;
 import com.purbon.kafka.topology.model.Impl.TopicImpl;
 import com.purbon.kafka.topology.model.Topic;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import org.apache.kafka.clients.admin.Config;
@@ -37,12 +37,25 @@ public class TopicConfigUpdatePlanBuilderTest {
   }
 
   @Test
-  public void shouldNotAddNewConfigForNumPartitionsButShouldUpdateFlag() {
+  public void shouldNotAddNewConfigForNumPartitionsButShouldUpdateFlagWhenCountHigherThanCurrent()
+      throws IOException {
     doReturn(createEmptyConfig()).when(adminClient).getActualTopicConfig(TOPIC_NAME);
+    doReturn(3).when(adminClient).getPartitionCount(TOPIC_NAME);
     var topic = createTopic(TopicManager.NUM_PARTITIONS, "5");
     var plan = getTopicConfigUpdatePlan(topic);
     assertNewUpdatedAndDeletedCounts(plan, 0, 0, 0);
     assertTrue(plan.isUpdatePartitionCount());
+  }
+
+  @Test
+  public void shouldNotAddNewConfigForNumPartitionsAndShouldNotUpdateFlagWhenCountLowerThanCurrent()
+      throws IOException {
+    doReturn(createEmptyConfig()).when(adminClient).getActualTopicConfig(TOPIC_NAME);
+    doReturn(3).when(adminClient).getPartitionCount(TOPIC_NAME);
+    var topic = createTopic(TopicManager.NUM_PARTITIONS, "2");
+    var plan = getTopicConfigUpdatePlan(topic);
+    assertNewUpdatedAndDeletedCounts(plan, 0, 0, 0);
+    assertFalse(plan.isUpdatePartitionCount());
   }
 
   @Test
