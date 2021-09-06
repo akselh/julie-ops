@@ -67,6 +67,14 @@ public class TopicConfigUpdatePlanBuilderTest {
   }
 
   @Test
+  public void shouldAddNewConfigForRetentionWhenAlreadySetByBroker() {
+    doReturn(createBrokerOverriddenRetentionConfig()).when(adminClient).getActualTopicConfig(TOPIC_NAME);
+    var topic = createTopic(TopicConfig.RETENTION_MS_CONFIG, "1000");
+    var plan = getTopicConfigUpdatePlan(topic);
+    assertNewUpdatedAndDeletedCounts(plan, 1, 0, 0);
+  }
+
+  @Test
   public void shouldUpdateConfigForRetention() {
     doReturn(createAlreadyOverriddenRetentionConfig())
         .when(adminClient)
@@ -84,6 +92,16 @@ public class TopicConfigUpdatePlanBuilderTest {
     var topic = createTopic();
     var plan = getTopicConfigUpdatePlan(topic);
     assertNewUpdatedAndDeletedCounts(plan, 0, 0, 1);
+  }
+
+  @Test
+  public void shouldNotDeleteConfigForRetentionWhenSetByBroker() {
+    doReturn(createBrokerOverriddenRetentionConfig())
+        .when(adminClient)
+        .getActualTopicConfig(TOPIC_NAME);
+    var topic = createTopic();
+    var plan = getTopicConfigUpdatePlan(topic);
+    assertNewUpdatedAndDeletedCounts(plan, 0, 0, 0);
   }
 
   private TopicConfigUpdatePlan getTopicConfigUpdatePlan(Topic topic) {
@@ -114,6 +132,12 @@ public class TopicConfigUpdatePlanBuilderTest {
   private Config createAlreadyOverriddenRetentionConfig() {
     var configEntry =
         createRetentionConfig("432000000", ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG);
+    return new Config(Collections.singletonList(configEntry));
+  }
+
+  private Config createBrokerOverriddenRetentionConfig() {
+    var configEntry =
+        createRetentionConfig("432000000", ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG);
     return new Config(Collections.singletonList(configEntry));
   }
 
