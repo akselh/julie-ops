@@ -51,8 +51,7 @@ public class TopicConfigUpdatePlanBuilder {
         .entries()
         .forEach(
             entry -> {
-              // TODO: This must check on other config sources as well - must be analyzed
-              if (!entry.isDefault() && !configKeys.contains(entry.name())) {
+              if (isDynamicTopicConfig(entry) && !configKeys.contains(entry.name())) {
                 topicConfigUpdatePlan.addConfigToDelete(entry.name(), entry.value());
               }
             });
