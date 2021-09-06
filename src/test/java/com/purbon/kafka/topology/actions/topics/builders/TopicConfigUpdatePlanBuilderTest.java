@@ -68,7 +68,9 @@ public class TopicConfigUpdatePlanBuilderTest {
 
   @Test
   public void shouldAddNewConfigForRetentionWhenAlreadySetByBroker() {
-    doReturn(createBrokerOverriddenRetentionConfig()).when(adminClient).getActualTopicConfig(TOPIC_NAME);
+    doReturn(createBrokerOverriddenRetentionConfig())
+        .when(adminClient)
+        .getActualTopicConfig(TOPIC_NAME);
     var topic = createTopic(TopicConfig.RETENTION_MS_CONFIG, "1000");
     var plan = getTopicConfigUpdatePlan(topic);
     assertNewUpdatedAndDeletedCounts(plan, 1, 0, 0);
