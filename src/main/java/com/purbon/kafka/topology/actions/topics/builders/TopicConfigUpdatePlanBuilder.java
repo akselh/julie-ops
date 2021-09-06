@@ -35,14 +35,12 @@ public class TopicConfigUpdatePlanBuilder {
         .forEach(
             (configKey, configValue) -> {
               ConfigEntry currentConfigEntry = currentConfigs.get(configKey);
-              // TODO: Must analyze further if isDynamicTopicConfig is the correct thing here
-              // From browsing the code, it appears that all topic configs that are not default will
-              // be dynamic.
-              if (!isDynamicTopicConfig(currentConfigEntry)
-                  && !currentConfigEntry.value().equals(configValue)) {
-                topicConfigUpdatePlan.addNewConfig(configKey, configValue);
-              } else if (!currentConfigEntry.value().equals(configValue)) {
-                topicConfigUpdatePlan.addConfigToUpdate(configKey, configValue);
+              if (!currentConfigEntry.value().equals(configValue)) {
+                if (isDynamicTopicConfig(currentConfigEntry)) {
+                  topicConfigUpdatePlan.addConfigToUpdate(configKey, configValue);
+                } else {
+                  topicConfigUpdatePlan.addNewConfig(configKey, configValue);
+                }
               }
             });
 
