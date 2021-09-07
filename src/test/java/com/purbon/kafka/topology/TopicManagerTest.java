@@ -21,6 +21,8 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.kafka.clients.admin.Config;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
