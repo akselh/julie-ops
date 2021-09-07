@@ -37,7 +37,7 @@ public class TopicConfigUpdatePlanBuilderTest {
   }
 
   @Test
-  public void shouldNotAddNewConfigForNumPartitionsButShouldUpdateFlagWhenCountHigherThanCurrent()
+  public void shouldUpdatePartitionCountWhenHigherThanCurrent()
       throws IOException {
     doReturn(createEmptyConfig()).when(adminClient).getActualTopicConfig(TOPIC_NAME);
     doReturn(3).when(adminClient).getPartitionCount(TOPIC_NAME);
@@ -48,7 +48,7 @@ public class TopicConfigUpdatePlanBuilderTest {
   }
 
   @Test
-  public void shouldNotAddNewConfigForNumPartitionsAndShouldNotUpdateFlagWhenCountLowerThanCurrent()
+  public void shouldNotUpdatePartitionCountWhenLowerThanCurrent()
       throws IOException {
     doReturn(createEmptyConfig()).when(adminClient).getActualTopicConfig(TOPIC_NAME);
     doReturn(3).when(adminClient).getPartitionCount(TOPIC_NAME);
