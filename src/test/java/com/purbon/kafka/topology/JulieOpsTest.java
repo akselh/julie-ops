@@ -147,15 +147,15 @@ public class JulieOpsTest {
     builder.setConnectorManager(connectorManager);
     builder.setKsqlArtefactManager(ksqlArtefactManager);
 
-    doNothing().when(topicManager).updatePlan(anyObject(), anyObject());
+    doNothing().when(topicManager).updatePlan(any(), any());
 
-    doNothing().when(accessControlManager).updatePlan(anyObject(), anyObject());
+    doNothing().when(accessControlManager).updatePlan(any(), any());
 
     builder.run();
     builder.close();
 
-    verify(topicManager, times(1)).updatePlan(anyObject(), anyObject());
-    verify(accessControlManager, times(1)).updatePlan(anyObject(), anyObject());
+    verify(topicManager, times(1)).updatePlan(any(), any());
+    verify(accessControlManager, times(1)).updatePlan(any(), any());
     verify(connectorManager, times(1)).updatePlan(any(), any());
   }
 
@@ -177,21 +177,21 @@ public class JulieOpsTest {
     builder.setConnectorManager(connectorManager);
     builder.setKsqlArtefactManager(ksqlArtefactManager);
 
-    doNothing().when(topicManager).updatePlan(anyObject(), anyObject());
+    doNothing().when(topicManager).updatePlan(any(), any());
 
-    doNothing().when(accessControlManager).updatePlan(anyObject(), anyObject());
+    doNothing().when(accessControlManager).updatePlan(any(), any());
 
     builder.run(new BackendController(stateProcessor), System.out);
     builder.close();
 
     verify(stateProcessor, times(1)).createOrOpen();
     verify(stateProcessor, times(1)).createOrOpen(Mode.TRUNCATE);
-    verify(topicManager, times(1)).updatePlan(anyObject(), anyObject());
-    verify(accessControlManager, times(1)).updatePlan(anyObject(), anyObject());
+    verify(topicManager, times(1)).updatePlan(any(), any());
+    verify(accessControlManager, times(1)).updatePlan(any(), any());
   }
 
   @Test
-  public void buiderRunTest() throws Exception {
+  public void builderRunTest() throws Exception {
     String fileOrDirPath = TestUtils.getResourceFilename("/descriptor.yaml");
 
     Configuration builderConfig = new Configuration(cliOps, props);
@@ -209,15 +209,15 @@ public class JulieOpsTest {
     builder.setConnectorManager(connectorManager);
     builder.setKsqlArtefactManager(ksqlArtefactManager);
 
-    doNothing().when(topicManager).updatePlan(anyObject(), anyObject());
+    doNothing().when(topicManager).updatePlan(any(), any());
 
-    doNothing().when(accessControlManager).updatePlan(anyObject(), anyObject());
+    doNothing().when(accessControlManager).updatePlan(any(), any());
 
     builder.run();
     builder.close();
 
-    verify(topicManager, times(1)).updatePlan(anyObject(), anyObject());
-    verify(accessControlManager, times(1)).updatePlan(anyObject(), anyObject());
+    verify(topicManager, times(1)).updatePlan(any(), any());
+    verify(accessControlManager, times(1)).updatePlan(any(), any());
   }
 
   @Test
@@ -238,14 +238,14 @@ public class JulieOpsTest {
     builder.setAccessControlManager(accessControlManager);
     builder.setKsqlArtefactManager(ksqlArtefactManager);
 
-    doNothing().when(topicManager).updatePlan(anyObject(), anyObject());
+    doNothing().when(topicManager).updatePlan(any(), any());
 
-    doNothing().when(accessControlManager).updatePlan(anyObject(), anyObject());
+    doNothing().when(accessControlManager).updatePlan(any(), any());
 
     builder.run();
     builder.close();
 
-    verify(topicManager, times(1)).updatePlan(anyObject(), anyObject());
-    verify(accessControlManager, times(1)).updatePlan(anyObject(), anyObject());
+    verify(topicManager, times(1)).updatePlan(any(), any());
+    verify(accessControlManager, times(1)).updatePlan(any(), any());
   }
 }
