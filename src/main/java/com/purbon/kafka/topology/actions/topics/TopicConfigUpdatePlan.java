@@ -1,12 +1,11 @@
 package com.purbon.kafka.topology.actions.topics;
 
 import com.purbon.kafka.topology.model.Topic;
-import org.apache.kafka.clients.admin.Config;
-import org.apache.kafka.clients.admin.ConfigEntry;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.apache.kafka.clients.admin.Config;
+import org.apache.kafka.clients.admin.ConfigEntry;
 
 public class TopicConfigUpdatePlan {
   private final Topic topic;
@@ -79,33 +78,31 @@ public class TopicConfigUpdatePlan {
     return updatePartitionCount || hasNewConfigs() || hasUpdatedConfigs() || hasDeletedConfigs();
   }
 
-  public void addNewOrUpdatedConfigs(HashMap<String, String> topicConfigs, Config currentKafkaConfigs) {
-    topicConfigs
-            .forEach(
-                    (configKey, configValue) -> {
-                      ConfigEntry currentConfigEntry = currentKafkaConfigs.get(configKey);
-                      if (!currentConfigEntry.value().equals(configValue)) {
-                        if (isDynamicTopicConfig(currentConfigEntry)) {
-                          addConfigToUpdate(configKey, configValue);
-                        } else {
-                          addNewConfig(configKey, configValue);
-                        }
-                      }
-                    });
-
+  public void addNewOrUpdatedConfigs(
+      HashMap<String, String> topicConfigs, Config currentKafkaConfigs) {
+    topicConfigs.forEach(
+        (configKey, configValue) -> {
+          ConfigEntry currentConfigEntry = currentKafkaConfigs.get(configKey);
+          if (!currentConfigEntry.value().equals(configValue)) {
+            if (isDynamicTopicConfig(currentConfigEntry)) {
+              addConfigToUpdate(configKey, configValue);
+            } else {
+              addNewConfig(configKey, configValue);
+            }
+          }
+        });
   }
 
   public void addDeletedConfigs(HashMap<String, String> topicConfigs, Config currentKafkaConfigs) {
     Set<String> configKeys = topicConfigs.keySet();
     currentKafkaConfigs
-            .entries()
-            .forEach(
-                    entry -> {
-                      if (isDynamicTopicConfig(entry) && !configKeys.contains(entry.name())) {
-                        addConfigToDelete(entry.name(), entry.value());
-                      }
-                    });
-
+        .entries()
+        .forEach(
+            entry -> {
+              if (isDynamicTopicConfig(entry) && !configKeys.contains(entry.name())) {
+                addConfigToDelete(entry.name(), entry.value());
+              }
+            });
   }
 
   private boolean isDynamicTopicConfig(ConfigEntry currentConfigEntry) {

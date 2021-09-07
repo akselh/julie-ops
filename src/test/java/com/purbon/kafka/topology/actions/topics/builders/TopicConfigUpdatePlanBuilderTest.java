@@ -37,8 +37,7 @@ public class TopicConfigUpdatePlanBuilderTest {
   }
 
   @Test
-  public void shouldUpdatePartitionCountWhenHigherThanCurrent()
-      throws IOException {
+  public void shouldUpdatePartitionCountWhenHigherThanCurrent() throws IOException {
     doReturn(createEmptyConfig()).when(adminClient).getActualTopicConfig(TOPIC_NAME);
     doReturn(3).when(adminClient).getPartitionCount(TOPIC_NAME);
     var topic = createTopic(TopicManager.NUM_PARTITIONS, "5");
@@ -48,8 +47,7 @@ public class TopicConfigUpdatePlanBuilderTest {
   }
 
   @Test
-  public void shouldNotUpdatePartitionCountWhenLowerThanCurrent()
-      throws IOException {
+  public void shouldNotUpdatePartitionCountWhenLowerThanCurrent() throws IOException {
     doReturn(createEmptyConfig()).when(adminClient).getActualTopicConfig(TOPIC_NAME);
     doReturn(3).when(adminClient).getPartitionCount(TOPIC_NAME);
     var topic = createTopic(TopicManager.NUM_PARTITIONS, "2");

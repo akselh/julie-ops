@@ -3,10 +3,9 @@ package com.purbon.kafka.topology.actions.topics.builders;
 import com.purbon.kafka.topology.actions.topics.TopicConfigUpdatePlan;
 import com.purbon.kafka.topology.api.adminclient.TopologyBuilderAdminClient;
 import com.purbon.kafka.topology.model.Topic;
-import org.apache.kafka.clients.admin.Config;
-
 import java.io.IOException;
 import java.util.HashMap;
+import org.apache.kafka.clients.admin.Config;
 
 public class TopicConfigUpdatePlanBuilder {
 
