@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - master
+      - test_exe_log_imp_2_branch_after_merge_julieops
       - 3.x
       - 3.0.x
   pull_request:
